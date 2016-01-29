@@ -1,3 +1,6 @@
+--Fork from https://github.com/2ndQuadrant/pgaudit that adds Graylog Gelf output to 127.0.0.1:12201
+--Requires curl and curl-devel https://github.com/bagder/curl.git
+
 pgaudit
 =======
 
