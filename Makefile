@@ -8,11 +8,13 @@
 
 MODULE = pgaudit
 MODULE_big = pgaudit
-OBJS = pgaudit.o
+OBJS = pgaudit.o gelfoutput.o
 
 EXTENSION = pgaudit
 
 DATA = pgaudit--1.0.0.sql
+
+SHLIB_LINK = -lcurl
 
 ifdef USE_PGXS
 PG_CONFIG = pg_config

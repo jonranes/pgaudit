@@ -47,6 +47,7 @@
 #include "utils/rel.h"
 #include "utils/syscache.h"
 #include "utils/timestamp.h"
+#include "gelfoutput.h"
 
 PG_MODULE_MAGIC;
 
@@ -360,6 +361,21 @@ should_be_logged(Oid userid, AuditEvent *e, const char **classname)
 	return true;
 }
 
+static bool
+insertauditrow(char* timestamp_val, char* database_val, char* username, char* eusername, char* classname, char* tag, char* object_type, char* object_id, char* command_text)
+{
+	int *result;
+	result = post_gelf(timestamp_val, database_val, username, eusername, classname, tag, object_type, object_id, command_text);
+	if (result == 0)
+	{
+		return true;  
+	}
+	else
+	{
+		return false;
+	}
+}
+
 /*
  * Takes an AuditEvent and, if it should_be_logged(), writes it to the
  * audit log. The AuditEvent is assumed to be completely filled in by
@@ -371,11 +387,11 @@ static void
 log_audit_event(AuditEvent *e)
 {
 	Oid userid;
-	const char *timestamp;
-	const char *database;
-	const char *username;
-	const char *eusername;
-	const char *classname;
+	char *timestamp;
+	char *database;
+	char *username;
+	char *eusername;
+	char *classname;
 
 	userid = GetSessionUserId();
 
@@ -397,14 +413,19 @@ log_audit_event(AuditEvent *e)
 	 * to a separate file or a table.
 	 */
 
-	ereport(LOG,
+	if (!insertauditrow(timestamp, database, username, eusername, classname, e->command_tag, e->object_type, e->object_id, e->command_text))
+	{
+		ereport(LOG,
 			(errmsg("AUDIT,%s,%s,%s,%s,%s,%s,%s,%s,%s",
 					timestamp, database,
 					username, eusername, classname,
 					e->command_tag, e->object_type, e->object_id,
 					e->command_text),
 			 errhidestmt(true)));
+	}
+
 }
+
 
 #if PG_VERSION_NUM >= 90500 && !defined(USE_DEPARSE_FUNCTIONS)
 /* This code is adapted from ExecCheckRTEPermsModified */
