@@ -105,7 +105,7 @@ int* post_gelf(char* timestamp_val, char* database_val, char* username, char* eu
 
     //char* fullstring = "{\"short_message\":\"pg\", \"host\":\"wpo-vmdb01\", \"facility\":\"GELF\", \"version\":\"1.0\"}";
     
-    char* first= "{\"short_message\":\"pg\", \"host\":\"wpo-vmdb01\", \"facility\":\"GELF\", \"version\":\"1.0\"";
+    char* first= "{\"short_message\":\"pg\", \"host\":\"yourservername\", \"facility\":\"GELF\", \"version\":\"1.0\"";
 
     char* tmp = concat(",\"DatabaseVal\": \"", database_val);
     char* database = concat(tmp, "\"");
