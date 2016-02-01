@@ -213,23 +213,6 @@ int* post_gelf(char* timestamp_val, char* database_val, char* username, char* eu
         return 2;
     }
 
-    /* check payload */
-    if (cf->payload != NULL) {
-        /* print result */
-        printf("CURL Returned: \n%s\n", cf->payload);
-        /* parse return */
-        //json = json_tokener_parse_verbose(cf->payload, &jerr);
-        /* free payload */
-        free(cf->payload);
-    } else {
-        /* error */
-        fprintf(stderr, "ERROR: Failed to populate payload");
-        /* free payload */
-        free(cf->payload);
-        /* return */
-        return 3;
-    }
-
     free(json_to_send);
 
     /* exit */
