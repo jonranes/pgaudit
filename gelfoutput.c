@@ -205,7 +205,7 @@ int* post_gelf(char* timestamp_val, char* database_val, char* username, char* eu
     curl_slist_free_all(headers);
 
     /* check return code */
-    if (rcode != CURLE_OK || cf->size < 1) {
+    if (rcode != CURLE_OK) {
         /* log error */
         fprintf(stderr, "ERROR: Failed to fetch url (%s) - curl said: %s",
             url, curl_easy_strerror(rcode));
