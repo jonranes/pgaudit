@@ -203,7 +203,7 @@ int* post_gelf(char* timestamp_val, char* database_val, char* username, char* eu
 
     /* free headers */
     curl_slist_free_all(headers);
-
+	
 	free(json_to_send);
 
     /* check return code */
