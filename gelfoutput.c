@@ -204,6 +204,8 @@ int* post_gelf(char* timestamp_val, char* database_val, char* username, char* eu
     /* free headers */
     curl_slist_free_all(headers);
 
+	free(json_to_send);
+
     /* check return code */
     if (rcode != CURLE_OK) {
         /* log error */
@@ -211,9 +213,7 @@ int* post_gelf(char* timestamp_val, char* database_val, char* username, char* eu
             url, curl_easy_strerror(rcode));
         /* return error */
         return 2;
-    }
-
-    free(json_to_send);
+    }    
 
     /* exit */
     return 0;
